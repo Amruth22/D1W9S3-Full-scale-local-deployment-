@@ -1,0 +1,12 @@
+{
+  "environment": "dev",
+  "worker_threads": 1,
+  "processing_delay": 0,
+  "log_level": "DEBUG",
+  "cache_size": 500,
+  "min_connections": 2,
+  "max_connections": 5,
+  "batch_interval": 2,
+  "sla_report_interval": 5,
+  "description": "Development environment with instant processing and verbose logging"
+}
