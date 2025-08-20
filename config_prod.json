@@ -1,0 +1,12 @@
+{
+  "environment": "prod",
+  "worker_threads": 4,
+  "processing_delay": 0.5,
+  "log_level": "WARNING",
+  "cache_size": 2000,
+  "min_connections": 5,
+  "max_connections": 10,
+  "batch_interval": 5,
+  "sla_report_interval": 30,
+  "description": "Production environment with realistic delays and minimal logging"
+}
