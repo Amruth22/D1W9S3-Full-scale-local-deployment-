@@ -1,0 +1,12 @@
+{
+  "environment": "staging",
+  "worker_threads": 2,
+  "processing_delay": 1,
+  "log_level": "INFO",
+  "cache_size": 1000,
+  "min_connections": 3,
+  "max_connections": 8,
+  "batch_interval": 5,
+  "sla_report_interval": 15,
+  "description": "Staging environment with moderate delays and normal logging"
+}
