@@ -75,7 +75,7 @@ class SLAMetrics:
     def get_sla_compliance(self) -> Dict[str, Any]:
         with self.lock:
             if not self.reservation_times:
-                return {"compliance_95th": 0, "avg_time": 0, "total_processed": 0}
+                return {"compliance_95th": 0, "avg_time": 0, "total_processed": 0, "sla_met": True}
             
             times = sorted(self.reservation_times)
             total_processed = len(times)
@@ -169,8 +169,10 @@ class ConnectionPool:
                 conn.close()
                 self.active_connections -= 1
 
-# Global connection pool
-db_pool = ConnectionPool("library_system.db", config["min_connections"], config["max_connections"])
+# Global connection pool - use port-specific database to avoid conflicts
+port = os.getenv("PORT", "8000")
+db_filename = f"library_system_{port}.db"
+db_pool = ConnectionPool(db_filename, config["min_connections"], config["max_connections"])
 
 # Pydantic models
 class Book(BaseModel):

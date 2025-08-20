@@ -12,7 +12,7 @@ import json
 from datetime import datetime
 
 # Configuration
-API_PORTS = [8080, 8081]
+API_PORTS = [8080, 8081]  # Main server on 8080, direct API on 8081
 PROXY_PORT = 8000
 ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
 
@@ -77,10 +77,11 @@ def wait_for_server(port, timeout=30):
 
 def main():
     """Main startup function"""
-    print("Library Book Reservation System - Full-scale Deployment")
+    print("Library Book Reservation System - Dual Server Deployment")
     print("=" * 60)
     print(f"Environment: {ENVIRONMENT}")
-    print(f"Starting {len(API_PORTS)} API servers and 1 reverse proxy")
+    print("Starting main server (8080) + direct API (8081) + reverse proxy (8000)")
+    print("This will start both API servers and load balancer")
     print("=" * 60)
     
     processes = []
@@ -95,17 +96,21 @@ def main():
         
         # Start API servers
         for port in API_PORTS:
+            server_type = "MAIN" if port == 8080 else "DIRECT_API"
+            print(f"Starting {server_type} server on port {port}...")
             process = start_api_server(port, ENVIRONMENT)
-            processes.append(("API", port, process))
+            processes.append((server_type, port, process))
             time.sleep(2)  # Small delay between starts
         
         # Wait for API servers to be ready
         print("Waiting for API servers to be ready...")
         for port in API_PORTS:
-            if wait_for_server(port):
-                print(f"  API server on port {port}: READY")
+            if wait_for_server(port, timeout=30):
+                server_type = "Main" if port == 8080 else "Direct API"
+                print(f"  {server_type} server on port {port}: READY")
             else:
-                print(f"  API server on port {port}: FAILED TO START")
+                server_type = "Main" if port == 8080 else "Direct API" 
+                print(f"  {server_type} server on port {port}: FAILED TO START")
                 return 1
         
         # Start reverse proxy
@@ -129,8 +134,8 @@ def main():
         print(f"SLA Monitoring: http://localhost:{PROXY_PORT}/sla")
         print()
         print("Direct API Access:")
-        for port in API_PORTS:
-            print(f"  API Server {port}: http://localhost:{port}")
+        print(f"  Main Server: http://localhost:8080")
+        print(f"  Direct API: http://localhost:8081")
         print()
         print("Press Ctrl+C to stop all services")
         print("=" * 60)
