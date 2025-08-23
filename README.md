@@ -74,7 +74,7 @@ export ENVIRONMENT=prod
 
 ### 3. Start Complete System
 ```bash
-python start_system.py
+python main.py
 ```
 
 This starts:
@@ -224,17 +224,10 @@ Queue Depth SLA (Target: < 50 pending):
 
 ## 🚀 Deployment Guide
 
-### **Single API Instance** (Development)
-```bash
-export ENVIRONMENT=dev
-python main.py
-```
-**Default port**: 8000 (or set with PORT environment variable)
-
 ### **Full-scale Deployment** (Recommended)
 ```bash
 export ENVIRONMENT=prod
-python start_system.py
+python main.py
 ```
 **This automatically starts**:
 - Main server on port 8080
@@ -321,7 +314,7 @@ python unit_test.py
 ### **Test with Running System**
 ```bash
 # Start the system
-python start_system.py
+python main.py
 
 # In another terminal, run tests
 python unit_test.py
@@ -340,7 +333,7 @@ python unit_test.py
 ### **Core Files**
 - `main.py` - Main FastAPI application with background workers
 - `reverse_proxy.py` - Load balancer (round-robin between 8080/8081)
-- `start_system.py` - Automated system startup script
+- `main.py` - Automated system startup script
 - `unit_test.py` - Test suite (12 passing tests)
 
 ### **Configuration Files**
